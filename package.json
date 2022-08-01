@@ -1,0 +1,11 @@
+{
+  "name": "simple-promise-locks",
+  "version": "1.0.0",
+  "description": "easy to use, object-orientated, promise-based locks",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "hansSchall",
+  "license": "MIT"
+}
