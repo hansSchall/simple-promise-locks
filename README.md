@@ -12,7 +12,7 @@ This one is very simple to use:
 ````javascript
 const myLock = lock();
 // or
-const myLock = lock(false); // creates an already locked lock
+const myLock = lock(true); // creates an already locked lock
 ````
 
 2. Lock it:
