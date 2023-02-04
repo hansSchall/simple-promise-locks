@@ -1,3 +1,4 @@
+export default function lock(): Lock;
 export default function lock(defaultLocked: boolean): Lock;
 export interface Lock {
     (): Promise<void>,
@@ -5,4 +6,10 @@ export interface Lock {
     lock(locked: boolean): void,
     unlock(): void,
     locked: boolean,
+}
+
+export function waitFor<T>(): WaitFor<T>;
+export interface WaitFor<T> {
+    (value: T): void,
+    (): Promise<T>,
 }

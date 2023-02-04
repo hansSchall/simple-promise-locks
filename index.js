@@ -32,8 +32,23 @@ function lock(lockedDefault = false) {
     return lock;
 };
 
-let a = lock();
-let b = lock(true);
+function waitFor() {
+    let value = null;
+    let locked = lock(true);
+    return function (nvalue) {
+        if (nvalue) {
+            value = nvalue;
+            locked.unlock();
+        } else {
+            return (async () => {
+                await locked();
+                return value;
+            })();
+        }
+    };
+}
+
+lock.waitFor = waitFor;
 
 module.exports =
     lock;
