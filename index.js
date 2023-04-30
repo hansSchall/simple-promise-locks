@@ -35,10 +35,13 @@ function lock(lockedDefault = false) {
 function waitFor() {
     let value = null;
     let locked = lock(true);
-    return function (nvalue) {
-        if (nvalue) {
-            value = nvalue;
-            locked.unlock();
+    function updateValue(newValue) {
+        value = newValue;
+        locked.unlock();
+    }
+    return function (newValue) {
+        if (newValue) {
+            updateValue(newValue);
         } else {
             return (async () => {
                 await locked();

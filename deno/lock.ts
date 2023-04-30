@@ -17,8 +17,8 @@ export function Lock(lockedDefault = false): Lock {
             waiting.shift()();
         }
     };
-    lock.lock = (nlocked?: boolean) => {
-        if (nlocked === false) lock.unlock();
+    lock.lock = (nowLocked?: boolean) => {
+        if (nowLocked === false) lock.unlock();
         locked = true;
     };
     Object.defineProperty(lock, "locked", {
@@ -43,10 +43,13 @@ export interface Lock {
 export function WaitFor<T>() {
     let value: T = null;
     let locked = Lock(true);
-    return function (nvalue?: T) {
-        if (nvalue) {
-            value = nvalue;
-            locked.unlock();
+    function updateValue(newValue: T) {
+        value = newValue;
+        locked.unlock();
+    }
+    return function (newValue?: T) {
+        if (newValue) {
+            updateValue(newValue);
         } else {
             return (async () => {
                 await locked();
