@@ -1,3 +1,5 @@
+// node.js version
+
 function lock(lockedDefault = false) {
     const waiting = [];
     let locked = lockedDefault;

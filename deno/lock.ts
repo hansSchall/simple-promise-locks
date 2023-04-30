@@ -1,3 +1,5 @@
+// Deno version
+
 export function Lock(lockedDefault = false): Lock {
     const waiting = [];
     let locked = lockedDefault;

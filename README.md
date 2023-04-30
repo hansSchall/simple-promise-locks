@@ -1,6 +1,8 @@
 # simple-promise-locks
 
-Easy to use, object-orientated, promise-based locks
+Easy to use, object-orientated, promise-based, typescript-first locks
+
+Supports Deno, Node.js and browser.
 
 There are hundreds of similar repositories, but I was missing the above
 aspects.<br/> Most of them identify a lock by a name and not an object as it is
@@ -8,13 +10,16 @@ typical for JavaScript/TypeScript.<br/> Additionally I was missing a simple
 support for ES6 Promises
 
 Install it via `npm install simple-promise-locks` or
-`yarn add simple-promise-locks`. (Deno users see bottom of page)
+`yarn add simple-promise-locks`. (lock is a default export, waitFor is a
+property of it)
+
+Deno users: please see bottom of page
 
 This one is very simple to use:
 
 ## Lock API
 
-1. Create the lock:
+### 1 Create the lock:
 
 ```javascript
 const myLock = lock();
@@ -22,7 +27,7 @@ const myLock = lock();
 const myLock = lock(true); // creates an already locked lock
 ```
 
-2. Lock it:
+### 2 Lock it:
 
 ```javascript
 myLock.lock();
@@ -32,13 +37,13 @@ myLock.lock(true);
 myLock.locked = true;
 ```
 
-3. Wait for the lock to unlock:
+### 3 Wait for the lock to unlock:
 
 ```javascript
 await myLock();
 ```
 
-4. Unlock it:
+### 4 Unlock it:
 
 ```javascript
 myLock.unlock();
@@ -57,7 +62,7 @@ like database drivers. It delays the access to the API until the instance has
 been created, instead of throwing a null pointer. It is built on top of the lock
 API.
 
-1. Create an instance
+### 1 Create an instance
 
 ```typescript
 // JavaScript
@@ -66,21 +71,30 @@ const w_globApi = waitFor();
 const w_globApi = waitFor<TypeOfAPI>();
 ```
 
-2. Set the value
+### 2a Set the value by calling the instance
 
 ```typescript
 w_globApi(apiInstance);
 ```
 
-3. Use the value
+Calling this multiple times will update the value.
+
+### 2b Set the value by an initializer function
 
 ```typescript
-const api = await w_globApi();
+// call signature of waitFor():
+waitFor(initFunction?: () => TypeOfAPI | Promise<TypeOfAPI>)
 ```
 
-The promise gets delayed until the value has been set the first time
+### 3 Use the value
 
-### Practical example using waitFor and SQLite:
+```typescript
+const api: Promise<TypeOfAPI> = await w_globApi();
+```
+
+The promise resolves once the value has been set the first time
+
+## Practical example using waitFor and SQLite (Node.js):
 
 ```typescript
 import { Database, open } from "sqlite"; // Promise abstraction for SQLite
@@ -115,7 +129,7 @@ export async function getData(id: string) {
 }
 ```
 
-## Note on Deno:
+## Using Deno:
 
 ```ts
 import {
@@ -128,7 +142,7 @@ import {
 
 ## License
 
-Copyright (c) 2022 Hans Schallmoser
+Copyright (c) 2022-2023 Hans Schallmoser
 
 MIT License
 

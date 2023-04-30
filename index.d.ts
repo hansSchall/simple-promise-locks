@@ -1,3 +1,5 @@
+// node.js version
+
 export default function lock(): Lock;
 export default function lock(defaultLocked: boolean): Lock;
 export interface Lock {
