@@ -40,12 +40,20 @@ export interface Lock {
     locked: boolean,
 }
 
-export function WaitFor<T>() {
+export function WaitFor<T>(init?: () => T | Promise<T>) {
     let value: T = null;
     let locked = Lock(true);
     function updateValue(newValue: T) {
         value = newValue;
         locked.unlock();
+    }
+    if (init) {
+        const res = init();
+        if (res instanceof Promise) {
+            res.then(updateValue);
+        } else {
+            updateValue(res);
+        }
     }
     return function (newValue?: T) {
         if (newValue) {

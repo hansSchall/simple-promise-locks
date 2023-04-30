@@ -8,7 +8,7 @@ export interface Lock {
     locked: boolean,
 }
 
-export function waitFor<T>(): WaitFor<T>;
+export function waitFor<T>(init?: () => T | Promise<T>): WaitFor<T>;
 export interface WaitFor<T> {
     (value: T): void,
     (): Promise<T>,

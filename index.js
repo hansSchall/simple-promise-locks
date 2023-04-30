@@ -32,12 +32,20 @@ function lock(lockedDefault = false) {
     return lock;
 };
 
-function waitFor() {
+function waitFor(init) {
     let value = null;
     let locked = lock(true);
     function updateValue(newValue) {
         value = newValue;
         locked.unlock();
+    }
+    if (init) {
+        const res = init();
+        if (res instanceof Promise) {
+            res.then(updateValue);
+        } else {
+            updateValue(res);
+        }
     }
     return function (newValue) {
         if (newValue) {
