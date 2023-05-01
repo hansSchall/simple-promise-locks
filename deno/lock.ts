@@ -42,7 +42,7 @@ export interface Lock {
     locked: boolean,
 }
 
-export function WaitFor<T>(init?: () => T | Promise<T>) {
+export function WaitFor<T>(init?: () => T | Promise<T>): WaitFor<T> {
     let value: T = null;
     let locked = Lock(true);
     function updateValue(newValue: T) {
